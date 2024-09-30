@@ -33,6 +33,33 @@ class ConfigurationProvider implements ServiceProviderInterface {
             $app[$key] = $param;
         }
 
+        $this->getServersFromEnv($app);
+
+    }
+
+    //this function loads the server from .env and replace the config
+    private function getServersFromEnv(Application $app) {
+        $serverKey =  'gearmanui.servers';
+        $serverFromEnv = getenv('GEARMAN_SERVERS') ?? '';
+
+        $processedServers = [];
+        foreach (explode(',', $serverFromEnv) as $serverFromEnv) {
+            $explodedServer = explode(':', $serverFromEnv);
+
+            if (!isset($explodedServer[0]) || !isset($explodedServer[1]) || !isset($explodedServer[2])) {
+                continue;
+            }
+
+            $processedServers[] = [
+                'name' => $explodedServer[0],
+                'addr' => "{$explodedServer[1]}:{$explodedServer[2]}",
+            ]; 
+        }
+
+        if (!empty($processedServers)) {
+            $app[$serverKey] =  $processedServers;
+        }
+
     }
 
 

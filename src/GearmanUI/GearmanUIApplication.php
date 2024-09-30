@@ -28,8 +28,21 @@ class GearmanUIApplication extends Application
     {
         parent::__construct($values);
 
+        //get env
+        $env = file_get_contents(__DIR__.'/../../.env');
+        $lines = explode("\n",$env);
+
+        foreach($lines as $line){
+          preg_match("/([^#]+)\=(.*)/",$line,$matches);
+
+          if(isset($matches[2])){
+            putenv(trim($line));
+          }
+        } 
+
         # Set run env
         $this['env'] = getenv('APP_ENV') ?: 'prod';
+        $this['baseurl'] = getenv('GEARMANUI_BASEURL') ?: ''; 
 
         # Monolog service
         # In test env, do not log.
