@@ -19,27 +19,27 @@ use Silex\Application,
 class ControllerProvider implements ServiceProviderInterface {
 
     public function register(Application $app) {
-        $app->get('/', function() use ($app) {
+
+        $app->get("{$app['baseurl']}", function() use ($app) {
             return $app->renderView('index.html.twig', array('settings' => $app['gearmanui.settings']));
         });
 
-        $app->get('/status', function() use ($app) {
+        $app->get("{$app['baseurl']}status", function() use ($app) {
             return $app->renderView('status.html.twig');
         });
 
-        $app->get('/workers', function() use ($app) {
+        $app->get("{$app['baseurl']}workers", function() use ($app) {
             return $app->renderView('workers.html.twig');
         });
 
-        $app->get('/servers', function() use ($app) {
+        $app->get("{$app['baseurl']}servers", function() use ($app) {
             return $app->renderView('servers.html.twig');
         });
 
-        $app->get('/info', function(Request $request) use ($app) {
+        $app->get("{$app['baseurl']}info", function(Request $request) use ($app) {
 
             $info = $app['gearman.serverInfo']->getServersInfo();
             return new JsonResponse($info);
-            // return $app->renderView('gearman.json.twig');
         });
     }
 
