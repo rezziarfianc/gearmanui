@@ -33,8 +33,7 @@ class ConfigurationProvider implements ServiceProviderInterface {
             $app[$key] = $param;
         }
 
-        $this->getServersFromEnv($app);
-
+        $app['baseurl'] = $app['gearmanui.baseurl'] ?: '/'; 
     }
 
     //this function loads the server from .env and replace the config
