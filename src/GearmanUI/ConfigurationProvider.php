@@ -40,7 +40,7 @@ class ConfigurationProvider implements ServiceProviderInterface {
     //this function loads the server from .env and replace the config
     private function getServersFromEnv(Application $app) {
         $serverKey =  'gearmanui.servers';
-        $serverFromEnv = getenv('GEARMAN_SERVERS') ?? '';
+        $serverFromEnv = getenv('GEARMAN_SERVERS') ?: '';
 
         $processedServers = [];
         foreach (explode(',', $serverFromEnv) as $serverFromEnv) {
